@@ -81,37 +81,29 @@ class GoogleMapsRoutingApi:
             return waypoint
         raise TypeError(f"Unsupported waypoint type: {type(waypoint).__name__}")
 
-    async def async_compute_routes(
-        self,
-        *,
+    @staticmethod
+    def _build_payload(
         origin: Waypoint | str,
         destination: Waypoint | str,
-        travel_mode: TravelMode | str = TravelMode.DRIVE,
-        routing_preference: RoutingPreference | str | None = None,
-        departure_time: dt.datetime | None = None,
-        arrival_time: dt.datetime | None = None,
-        language_code: str | None = None,
-        units: Units | str | None = None,
-        avoid_tolls: bool = False,
-        avoid_highways: bool = False,
-        avoid_ferries: bool = False,
-        avoid_indoor: bool = False,
-        traffic_model: TrafficModel | str | None = None,
-        transit_routing_preference: TransitRoutingPreference | str | None = None,
-        allowed_travel_modes: list[TransitTravelMode | str] | None = None,
-        compute_alternative_routes: bool = False,
-        field_mask: str | list[str] | None = None,
-    ) -> ComputeRoutesResponse:
-        """Compute routes using the Google Routes API.
-
-        See https://developers.google.com/maps/documentation/routes/reference/rest/v2/top-level/Console/computeRoutes
-
-        departure_time and arrival_time must be timezone-aware datetimes and are
-        serialized as RFC 3339 timestamps.
-        """
+        travel_mode: TravelMode | str,
+        routing_preference: RoutingPreference | str | None,
+        departure_time: dt.datetime | None,
+        arrival_time: dt.datetime | None,
+        language_code: str | None,
+        units: Units | str | None,
+        avoid_tolls: bool,
+        avoid_highways: bool,
+        avoid_ferries: bool,
+        avoid_indoor: bool,
+        traffic_model: TrafficModel | str | None,
+        transit_routing_preference: TransitRoutingPreference | str | None,
+        allowed_travel_modes: list[TransitTravelMode | str] | None,
+        compute_alternative_routes: bool,
+    ) -> dict[str, Any]:
+        """Build the JSON payload for a computeRoutes request."""
         payload: dict[str, Any] = {
-            "origin": self._waypoint_to_dict(origin),
-            "destination": self._waypoint_to_dict(destination),
+            "origin": GoogleMapsRoutingApi._waypoint_to_dict(origin),
+            "destination": GoogleMapsRoutingApi._waypoint_to_dict(destination),
             "travelMode": _enum_value(travel_mode),
         }
         if routing_preference is not None:
@@ -142,6 +134,54 @@ class GoogleMapsRoutingApi:
             payload["transitPreferences"] = transit_preferences
         if compute_alternative_routes:
             payload["computeAlternativeRoutes"] = True
+        return payload
+
+    async def async_compute_routes(
+        self,
+        *,
+        origin: Waypoint | str,
+        destination: Waypoint | str,
+        travel_mode: TravelMode | str = TravelMode.DRIVE,
+        routing_preference: RoutingPreference | str | None = None,
+        departure_time: dt.datetime | None = None,
+        arrival_time: dt.datetime | None = None,
+        language_code: str | None = None,
+        units: Units | str | None = None,
+        avoid_tolls: bool = False,
+        avoid_highways: bool = False,
+        avoid_ferries: bool = False,
+        avoid_indoor: bool = False,
+        traffic_model: TrafficModel | str | None = None,
+        transit_routing_preference: TransitRoutingPreference | str | None = None,
+        allowed_travel_modes: list[TransitTravelMode | str] | None = None,
+        compute_alternative_routes: bool = False,
+        field_mask: str | list[str] | None = None,
+    ) -> ComputeRoutesResponse:
+        """Compute routes using the Google Routes API.
+
+        See https://developers.google.com/maps/documentation/routes/reference/rest/v2/top-level/Console/computeRoutes
+
+        departure_time and arrival_time must be timezone-aware datetimes and are
+        serialized as RFC 3339 timestamps.
+        """
+        payload = self._build_payload(
+            origin,
+            destination,
+            travel_mode,
+            routing_preference,
+            departure_time,
+            arrival_time,
+            language_code,
+            units,
+            avoid_tolls,
+            avoid_highways,
+            avoid_ferries,
+            avoid_indoor,
+            traffic_model,
+            transit_routing_preference,
+            allowed_travel_modes,
+            compute_alternative_routes,
+        )
 
         mask = ",".join(field_mask) if isinstance(field_mask, list) else field_mask
         headers = {
@@ -161,7 +201,8 @@ class GoogleMapsRoutingApi:
                 headers=headers,
                 timeout=self.timeout,
             ) as resp:
-                res: dict[str, Any] = await resp.json()
+                body = await resp.json()
+                res: dict[str, Any] = body if isinstance(body, dict) else {}
                 _LOGGER.debug("Got %s for %s", resp.status, url)
                 if resp.status != HTTPStatus.OK:
                     error_data = res.get("error", {})
@@ -171,6 +212,8 @@ class GoogleMapsRoutingApi:
                         (detail.get("reason") for detail in error_data.get("details", []) if detail.get("reason")),
                         None,
                     )
+                    if resp.status == HTTPStatus.GATEWAY_TIMEOUT:
+                        raise GoogleMapsRoutingApiConnectionTimeoutError(error_msg)
                     if resp.status in (HTTPStatus.UNAUTHORIZED, HTTPStatus.FORBIDDEN) or reason == "API_KEY_INVALID":
                         raise GoogleMapsRoutingApiAuthError(error_msg, status=status, reason=reason)
                     raise GoogleMapsRoutingApiResponseError(error_msg, status=status, reason=reason)

@@ -393,6 +393,36 @@ async def test_error_responses(
     assert error.status == expected_api_status
 
 
+async def test_gateway_timeout_is_a_timeout_error(api: GoogleMapsRoutingApi, mock_server: MockServer) -> None:
+    """Test an HTTP 504 is reported as a timeout, like a client side timeout."""
+    mock_server.add_response(
+        {"error": {"code": 504, "message": "Deadline expired.", "status": "DEADLINE_EXCEEDED"}},
+        status=HTTPStatus.GATEWAY_TIMEOUT,
+    )
+
+    with pytest.raises(GoogleMapsRoutingApiConnectionTimeoutError, match="Timeout") as exc_info:
+        await api.async_compute_routes(origin=ORIGIN_ADDRESS, destination=DESTINATION_ADDRESS)
+
+    assert isinstance(exc_info.value, TimeoutError)
+
+
+async def test_empty_success_body_has_no_routes(api: GoogleMapsRoutingApi, mock_server: MockServer) -> None:
+    """Test a successful response without a JSON object doesn't crash."""
+    mock_server.add_response(None)
+
+    response = await api.async_compute_routes(origin=ORIGIN_ADDRESS, destination=DESTINATION_ADDRESS)
+
+    assert response.routes == []
+
+
+async def test_empty_error_body(api: GoogleMapsRoutingApi, mock_server: MockServer) -> None:
+    """Test an error response without a JSON object is still mapped to an exception."""
+    mock_server.add_response(None, status=HTTPStatus.INTERNAL_SERVER_ERROR)
+
+    with pytest.raises(GoogleMapsRoutingApiResponseError, match="Unknown API error"):
+        await api.async_compute_routes(origin=ORIGIN_ADDRESS, destination=DESTINATION_ADDRESS)
+
+
 async def test_non_json_response(api: GoogleMapsRoutingApi, mock_server: MockServer) -> None:
     """Test a non-JSON body is reported as a connection error."""
     mock_server.add_response("<html>502 Bad Gateway</html>", status=HTTPStatus.BAD_GATEWAY)
