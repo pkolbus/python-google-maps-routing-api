@@ -1,0 +1,76 @@
+{
+  "routes": [
+    {
+      "legs": [
+        {
+          "steps": [
+            {
+              "navigationInstruction": {
+                "instructions": "Head northwest on Mercy St toward Castro St"
+              }
+            },
+            {
+              "navigationInstruction": {
+                "instructions": "Turn right onto S Shoreline Blvd"
+              }
+            },
+            {
+              "navigationInstruction": {
+                "instructions": "Take the ramp onto US-101 N"
+              }
+            },
+            {
+              "navigationInstruction": {
+                "instructions": "Keep left to continue on US-101 N/Hwy 101 N, follow signs for Civic Center/Bay Bridge"
+              }
+            },
+            {
+              "navigationInstruction": {
+                "instructions": "Keep left to continue on US-101 N/Central Fwy, follow signs for Golden Gate Br/Ninth St/Civic Center"
+              }
+            },
+            {
+              "navigationInstruction": {
+                "instructions": "Take exit 434A for Duboce Ave"
+              }
+            },
+            {
+              "navigationInstruction": {
+                "instructions": "Continue onto Duboce Ave"
+              }
+            },
+            {
+              "navigationInstruction": {
+                "instructions": "Turn right onto Valencia St"
+              }
+            },
+            {
+              "navigationInstruction": {
+                "instructions": "Turn right onto Market St"
+              }
+            },
+            {
+              "navigationInstruction": {
+                "instructions": "Keep right"
+              }
+            }
+          ],
+          "localizedValues": {
+            "distance": {
+              "text": "60.9 km"
+            },
+            "duration": {
+              "text": "1 hour 11 mins"
+            },
+            "staticDuration": {
+              "text": "49 mins"
+            }
+          }
+        }
+      ],
+      "distanceMeters": 60892,
+      "duration": "4256s",
+      "staticDuration": "2940s"
+    }
+  ]
+}

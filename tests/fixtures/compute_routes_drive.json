@@ -1,0 +1,80 @@
+{
+  "routes": [
+    {
+      "legs": [
+        {
+          "steps": [
+            {
+              "navigationInstruction": {
+                "instructions": "Head east toward Amphitheatre Pkwy\nRestricted usage road"
+              }
+            },
+            {
+              "navigationInstruction": {
+                "instructions": "Turn left toward Amphitheatre Pkwy\nRestricted usage road"
+              }
+            },
+            {
+              "navigationInstruction": {
+                "instructions": "Turn right onto Amphitheatre Pkwy"
+              }
+            },
+            {
+              "navigationInstruction": {
+                "instructions": "Turn right onto N Shoreline Blvd"
+              }
+            },
+            {
+              "navigationInstruction": {
+                "instructions": "Turn right onto W Middlefield Rd"
+              }
+            },
+            {
+              "navigationInstruction": {
+                "instructions": "Turn left onto San Pierre Way"
+              }
+            },
+            {
+              "navigationInstruction": {
+                "instructions": "Turn right onto San Ramon Ave"
+              }
+            },
+            {
+              "navigationInstruction": {
+                "instructions": "Turn left onto E San Marcos Cir\nDestination will be on the left"
+              }
+            }
+          ],
+          "localizedValues": {
+            "distance": {
+              "text": "2.0 mi"
+            },
+            "duration": {
+              "text": "10 mins"
+            },
+            "staticDuration": {
+              "text": "9 mins"
+            }
+          },
+          "distanceMeters": 3197,
+          "duration": "581s",
+          "staticDuration": "516s"
+        }
+      ],
+      "distanceMeters": 3197,
+      "duration": "581s",
+      "staticDuration": "516s",
+      "localizedValues": {
+        "distance": {
+          "text": "2.0 mi"
+        },
+        "duration": {
+          "text": "9 mins"
+        },
+        "staticDuration": {
+          "text": "9 mins"
+        }
+      }
+    }
+  ]
+}

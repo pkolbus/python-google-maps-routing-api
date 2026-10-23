@@ -1,0 +1,24 @@
+{
+  "error": {
+    "code": 403,
+    "message": "Requests from referer <empty> are blocked.",
+    "status": "PERMISSION_DENIED",
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.ErrorInfo",
+        "reason": "API_KEY_HTTP_REFERRER_BLOCKED",
+        "domain": "googleapis.com",
+        "metadata": {
+          "consumer": "projects/285779793579",
+          "httpReferrer": "<empty>",
+          "service": "routes.googleapis.com"
+        }
+      },
+      {
+        "@type": "type.googleapis.com/google.rpc.LocalizedMessage",
+        "locale": "en-US",
+        "message": "Requests from referer <empty> are blocked."
+      }
+    ]
+  }
+}

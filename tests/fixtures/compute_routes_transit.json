@@ -1,0 +1,124 @@
+{
+  "routes": [
+    {
+      "legs": [
+        {
+          "localizedValues": {
+            "distance": {
+              "text": "36.0 mi"
+            },
+            "duration": {
+              "text": "52 mins"
+            },
+            "staticDuration": {
+              "text": "52 mins"
+            }
+          }
+        }
+      ],
+      "distanceMeters": 57866,
+      "duration": "3120s",
+      "staticDuration": "3120s"
+    },
+    {
+      "legs": [
+        {
+          "localizedValues": {
+            "distance": {
+              "text": "36.0 mi"
+            },
+            "duration": {
+              "text": "1 hour 0 mins"
+            },
+            "staticDuration": {
+              "text": "1 hour 0 mins"
+            }
+          }
+        }
+      ],
+      "distanceMeters": 57866,
+      "duration": "3600s",
+      "staticDuration": "3600s"
+    },
+    {
+      "legs": [
+        {
+          "localizedValues": {
+            "distance": {
+              "text": "36.0 mi"
+            },
+            "duration": {
+              "text": "46 mins"
+            },
+            "staticDuration": {
+              "text": "46 mins"
+            }
+          }
+        }
+      ],
+      "distanceMeters": 57866,
+      "duration": "2760s",
+      "staticDuration": "2760s"
+    },
+    {
+      "legs": [
+        {
+          "localizedValues": {
+            "distance": {
+              "text": "36.0 mi"
+            },
+            "duration": {
+              "text": "1 hour 0 mins"
+            },
+            "staticDuration": {
+              "text": "1 hour 0 mins"
+            }
+          }
+        }
+      ],
+      "distanceMeters": 57866,
+      "duration": "3600s",
+      "staticDuration": "3600s"
+    },
+    {
+      "legs": [
+        {
+          "localizedValues": {
+            "distance": {
+              "text": "36.0 mi"
+            },
+            "duration": {
+              "text": "52 mins"
+            },
+            "staticDuration": {
+              "text": "52 mins"
+            }
+          }
+        }
+      ],
+      "distanceMeters": 57866,
+      "duration": "3120s",
+      "staticDuration": "3120s"
+    },
+    {
+      "legs": [
+        {
+          "localizedValues": {
+            "distance": {
+              "text": "36.0 mi"
+            },
+            "duration": {
+              "text": "1 hour 0 mins"
+            },
+            "staticDuration": {
+              "text": "1 hour 0 mins"
+            }
+          }
+        }
+      ],
+      "distanceMeters": 57866,
+      "duration": "3600s",
+      "staticDuration": "3600s"
+    }
+  ]
+}
