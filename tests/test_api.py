@@ -427,8 +427,13 @@ async def test_non_json_response(api: GoogleMapsRoutingApi, mock_server: MockSer
     """Test a non-JSON body is reported as a connection error."""
     mock_server.add_response("<html>502 Bad Gateway</html>", status=HTTPStatus.BAD_GATEWAY)
 
-    with pytest.raises(GoogleMapsRoutingApiConnectionError):
+    with pytest.raises(GoogleMapsRoutingApiConnectionError) as exc_info:
         await api.async_compute_routes(origin=ORIGIN_ADDRESS, destination=DESTINATION_ADDRESS)
+
+    # Callers log these errors, and tracebacks render chained exceptions with str()
+    assert API_KEY not in str(exc_info.value)
+    assert exc_info.value.__cause__ is not None
+    assert API_KEY not in str(exc_info.value.__cause__)
 
 
 @pytest.mark.parametrize(
